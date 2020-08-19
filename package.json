@@ -1,0 +1,73 @@
+{
+  "name": "steam-reviews",
+  "version": "1.0.0",
+  "description": "Reviews module for Steam app clone",
+  "scripts": {
+    "test": "jest --testTimeout=20000",
+    "gen:data": "node data-gen/index.js",
+    "seed": "npm i -g knex && npm run seed:internal && npm un -g knex",
+    "seed:internal": "knex migrate:rollback && knex migrate:latest && knex seed:run",
+    "server:dev": "nodemon server/index.js",
+    "client:dev": "webpack-dev-server --mode development --hot --open",
+    "lint": "eslint client/** --fix",
+    "start": "node server/index.js",
+    "build": "webpack --mode production",
+    "analyze": "webpack --profile --json > stats.json && webpack-bundle-analyzer stats.json public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FEC-Bell/steam-reviews.git"
+  },
+  "author": "Christina Wang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FEC-Bell/steam-reviews/issues"
+  },
+  "homepage": "https://github.com/FEC-Bell/steam-reviews#readme",
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/plugin-transform-runtime": "^7.10.3",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
+    "@testing-library/jest-dom": "^5.11.0",
+    "@testing-library/react": "^10.4.3",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-styled-components": "^1.10.7",
+    "cloudinary": "^1.22.0",
+    "compression-webpack-plugin": "^4.0.0",
+    "coveralls": "^3.1.0",
+    "css-loader": "^4.0.0",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.18.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "express-static-gzip": "^2.0.7",
+    "faker": "^4.1.0",
+    "html-webpack-plugin": "^4.3.0",
+    "jest": "^26.1.0",
+    "node-fetch": "^2.6.0",
+    "nodemon": "^2.0.4",
+    "pg-copy-streams": "^5.1.0",
+    "prop-types": "^15.7.2",
+    "style-loader": "^1.2.1",
+    "supertest": "^4.0.2",
+    "webpack": "^4.43.0",
+    "webpack-bundle-analyzer": "^3.8.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "knex": "^0.21.1",
+    "pg": "^8.2.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.1.1"
+  }
+}

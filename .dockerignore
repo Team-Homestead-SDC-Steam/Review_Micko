@@ -1,0 +1,10 @@
+node_modules
+*debug.log
+.env
+.git
+test
+data-gen/img-processing
+data-gen/*.js
+fec-engineering-journal
+.eslintrc.js
+jest.config.js

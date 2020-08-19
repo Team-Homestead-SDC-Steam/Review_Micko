@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+- lts/*
+services:
+- postgresql
+env:
+- PG_USER=postgres
+cache:
+  directories:
+  - node_modules
+after_script:
+- cat ./test/coverage/lcov.info | coveralls
