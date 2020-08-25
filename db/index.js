@@ -1,5 +1,5 @@
 const db = require('./knex');
-const { filterInvalid, buildSQLQuery } = require('./utils');
+const { filterInvalid, buildSQLQuery, createSQLQuery, updateSQLQuery, deleteSQLQuery} = require('./utils');
 
 /**
  * Gets the purchase details for a game, i.e. num direct Steam purchases & num key purchases
@@ -50,3 +50,29 @@ exports.getBadgeById = (badgeId) => {
   return db('badges')
     .where('id', badgeId);
 };
+
+//START OF CRUD API
+
+exports.createNewReview = (options) => {
+  let query = createSQLQuery(options)
+
+  return db.raw(query)
+  .then(result => result)
+  .catch(error => console.error(error));
+}
+
+exports.updateReviewById = (id, option) => {
+  let query = updateSQLQuery(id, option);
+
+  return db.raw(query)
+  .then(result => result)
+  .catch(error => console.error(error));
+}
+
+exports.deleteReviewById = (id) => {
+  let query = deleteSQLQuery(id);
+
+  return db.raw(query)
+  .then(result => result)
+  .catch(error => console.error(error));
+}

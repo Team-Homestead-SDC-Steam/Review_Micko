@@ -92,3 +92,68 @@ exports.buildSQLQuery = (gameId, options) => {
     hoursMaxStr +
     displayStr;
 };
+
+exports.createSQLQuery = (options) => {
+  let { id_user,
+    is_recommended,
+    hours_on_record,
+    hours_at_review_time,
+    purchase_type,
+    date_posted,
+    received_free,
+    review_text } = options;
+
+  let baseQuery = `INSERT INTO reviews
+    (${columns}) VALUES (${values});`;
+
+  let values = `${id_user},
+    ${is_recommended},
+    ${hours_on_record},
+    ${hours_at_review_time},
+    ${purchase_type},
+    ${date_posted},
+    ${received_free},
+    ${review_text},
+    ${randomNum},
+    ${randomNum},
+    ${randomNum}`;
+  //3 randomly generated number for num_found_helpful,funny,comments
+  let columns = `id_user,
+    is_recommended,
+    hours_on_record,
+    hours_at_review_time,
+    purchase_type,
+    date_posted,
+    received_free,
+    review_text,
+    num_found_helpful,
+    num_found_funny,
+    num_comments`;
+
+  let randomNum = Math.floor(Math.random() * 200);
+
+  return baseQuery;
+}
+
+exports.updateSQLQuery = (id, options) => {
+
+  let baseQuery = `UPDATE reviews SET ${columnAndValues} WHERE id = ${id}`;
+  let columnAndValues = ``;
+
+  for (let column in options) {
+    let baseTemplate = `${column} = ${options[column]}`;
+    columnAndValues = baseTemplate + ', ';
+  }
+
+  //remove last comma
+  columnAndValues = columnAndValues.substring(0, columnAndValues.length - 1);
+
+  return baseQuery;
+}
+
+exports.deleteSQLQuery = (id) => {
+
+  let baseQuery = `DELETE FROM reviews WHERE id_user = ${id}`;
+
+  return baseQuery;
+}
