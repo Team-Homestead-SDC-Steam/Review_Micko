@@ -94,6 +94,8 @@ exports.buildSQLQuery = (gameId, options) => {
 };
 
 exports.createSQLQuery = (options) => {
+  let randomNum = Math.floor(Math.random() * 200);
+
   let { id_user,
     is_recommended,
     hours_on_record,
@@ -103,22 +105,21 @@ exports.createSQLQuery = (options) => {
     received_free,
     review_text } = options;
 
-  let baseQuery = `INSERT INTO reviews
-    (${columns}) VALUES (${values});`;
-
   let values = `${id_user},
     ${is_recommended},
     ${hours_on_record},
     ${hours_at_review_time},
     ${purchase_type},
-    ${date_posted},
+    '${date_posted}',
     ${received_free},
-    ${review_text},
+    '${review_text}',
     ${randomNum},
     ${randomNum},
     ${randomNum}`;
   //3 randomly generated number for num_found_helpful,funny,comments
-  let columns = `id_user,
+
+  let columns = `
+  id_user,
     is_recommended,
     hours_on_record,
     hours_at_review_time,
@@ -130,7 +131,10 @@ exports.createSQLQuery = (options) => {
     num_found_funny,
     num_comments`;
 
-  let randomNum = Math.floor(Math.random() * 200);
+  let baseQuery = `INSERT INTO reviews
+    (${columns}) VALUES (${values});`;
+
+  console.log(baseQuery);
 
   return baseQuery;
 }
