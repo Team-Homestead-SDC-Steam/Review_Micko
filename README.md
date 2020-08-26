@@ -47,7 +47,8 @@ These are the related Steam services, of which [Game Description](https://github
     - [Query parameters](#query-parameters-urlsearchparams-for-apireviewsgameid)
 5. [Troubleshooting](#troubleshooting)
     - [Troubleshooting PostgreSQL](#troubleshooting-postgresql)
-6. [CRUD Documentation](#CRUD Documentation)
+6. [CRUD Documentation](#CRUD)
+
 
 ## Usage
 
@@ -258,7 +259,7 @@ Any uncovered problems, or errors that you solved and want to share? Feel free t
     ```
     might appear. If this happens, use `sudo su postgres` to switch to the postgres account, and run `psql -d steam_reviews` again. If user 'postgres' does not exist in your system, you may create this user *with superuser permissions* by typing `CREATE USER postgres SUPERUSER;` in psql CLI. See [this post](https://stackoverflow.com/questions/15301826/psql-fatal-role-postgres-does-not-exist) for more details. Typing `sudo su YOUR_USERNAME` will switch you back to your user account.
 
-## CRUD Documentation
+## CRUD
 
 - GET
     - Endpoint: /api/gamereviews/:gameid
