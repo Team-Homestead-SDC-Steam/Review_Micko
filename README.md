@@ -47,6 +47,7 @@ These are the related Steam services, of which [Game Description](https://github
     - [Query parameters](#query-parameters-urlsearchparams-for-apireviewsgameid)
 5. [Troubleshooting](#troubleshooting)
     - [Troubleshooting PostgreSQL](#troubleshooting-postgresql)
+6. [CRUD Documentation](#CRUD Documentation)
 
 ## Usage
 
@@ -256,4 +257,87 @@ Any uncovered problems, or errors that you solved and want to share? Feel free t
     psql: error: could not connect to server: FATAL:  role "<USERNAME>" does not exist
     ```
     might appear. If this happens, use `sudo su postgres` to switch to the postgres account, and run `psql -d steam_reviews` again. If user 'postgres' does not exist in your system, you may create this user *with superuser permissions* by typing `CREATE USER postgres SUPERUSER;` in psql CLI. See [this post](https://stackoverflow.com/questions/15301826/psql-fatal-role-postgres-does-not-exist) for more details. Typing `sudo su YOUR_USERNAME` will switch you back to your user account.
+
+## CRUD Documentation
+
+- GET
+    - Endpoint: /api/gamereviews/:gameid
+    - Output:
+```
+  {
+  steamPurchasedCount: Number,
+  otherPurchasedCount: Number,
+  data: [
+    {
+        "id": Number,
+        "id_user": Number,
+        "user": {
+            "id": Number, // matches id_user
+            "username": String,
+            "profile_url": String,
+            "is_online": Boolean,
+            "num_products": Number,
+            "num_reviews": Number,
+            "steam_level": Number,
+            "id_badge": Number, // id may be null, in which case badge entry won't be present
+            "badge": Null || {
+                "id": Number, // matches id_badge
+                "title": String,
+                "xp": Number,
+                "badge_url": String
+            }
+            "is_in_game": Boolean,
+            "in_game_id": Null || Number,
+            "in_game_status": Null || String
+        },
+        "id_game": Number,
+        "is_recommended": Boolean,
+        "hours_on_record": Single-precision Float String (“1800.3”),
+        "hours_at_review_time": Single-precision Float String (“1800.3”),
+        "purchase_type": String (either ‘direct’ or ‘key’),
+        "date_posted": ISODateString ("2020-06-03T15:00:00.000Z"),
+        "received_free": Boolean,
+        "review_text": String,
+        "num_found_helpful": Number,
+        "num_found_funny": Number,
+        "num_comments": Number
+    }
+```
+- CREATE
+    - Endpoint: /api/create/:gameid
+    - Required Query Params:
+```
+id_user,
+is_recommended,
+hours_on_record,
+hours_at_review_time,
+purchase_type,
+date_posted,
+received_free,
+review_text
+```
+
+```- Ex: /api/create/1?id_user=1&is_recommended=true&hours_on_record=100.10&hours_at_review_time=59.9&purchase_type=direct&date_posted=2020-05-22T18:37:02.382Z&received_free=false&review_text=I am so cool for reals ```
+
+- UPDATE:
+    - Endpoint: /api/update/:review_id
+    - Required Query Params:
+```
+id_user,
+is_recommended,
+hours_on_record,
+hours_at_review_time,
+purchase_type,
+date_posted,
+received_free,
+review_text
+```
+```- Ex: /api/update/1?id_user=1&is_recommended=true&hours_on_record=100.10&hours_at_review_time=59.9&purchase_type=direct&date_posted=2020-05-22T18:37:02.382Z&received_free=false&review_text=I am updating the review text! ```
+- Note: User must provide all of the parameter keys and its values and only change the values of keys that needs to be changed/updated (Keys listed above)
+
+- DELETE:
+    - Endpoint: /api/delete/:review_id
+
+```- Ex: /api/delete/1 ```
+
 
