@@ -76,13 +76,13 @@ router.get('/gamereviews/:gameid', async (req, res) => {
 //     });
 // });
 
-router.post('/create/:gameid', (req, res) => {
-  let options = req.query;
-
-  console.log(options);
+router.post('/create/:id_game', (req, res) => {
+  let options = {
+    ...req.params,
+    ...req.query
+  }
 
   createNewReview(options).then(result => {
-    console.log(result);
     res.send(200);
   })
   .catch(e => {
@@ -91,11 +91,14 @@ router.post('/create/:gameid', (req, res) => {
 
 })
 
-router.patch('/update/:gameid', (req, res) => {
-  let {id, option} = req.params;
+router.patch('/update/:id', (req, res) => {
+  let options = {
+    ...req.params,
+    ...req.query
+  }
 
-  updateReviewById(id, option).then(result => {
-    console.log(result);
+  console.log(options);
+  updateReviewById(options).then(result => {
     res.send(200);
   })
   .catch(e => {
@@ -103,10 +106,9 @@ router.patch('/update/:gameid', (req, res) => {
   })
 })
 
-router.delete('/delete/:gameid', (req, res) => {
+router.delete('/delete/:id', (req, res) => {
   let {id} = req.params;
   deleteReviewById(id).then(result => {
-    console.log(result);
     res.send(200);
   })
   .catch(e => {

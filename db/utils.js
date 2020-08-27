@@ -97,6 +97,7 @@ exports.createSQLQuery = (options) => {
   let randomNum = Math.floor(Math.random() * 200);
 
   let { id_user,
+    id_game,
     is_recommended,
     hours_on_record,
     hours_at_review_time,
@@ -106,10 +107,11 @@ exports.createSQLQuery = (options) => {
     review_text } = options;
 
   let values = `${id_user},
+    ${id_game},
     ${is_recommended},
     ${hours_on_record},
     ${hours_at_review_time},
-    ${purchase_type},
+    '${purchase_type}',
     '${date_posted}',
     ${received_free},
     '${review_text}',
@@ -120,6 +122,7 @@ exports.createSQLQuery = (options) => {
 
   let columns = `
   id_user,
+    id_game,
     is_recommended,
     hours_on_record,
     hours_at_review_time,
@@ -139,25 +142,42 @@ exports.createSQLQuery = (options) => {
   return baseQuery;
 }
 
-exports.updateSQLQuery = (id, options) => {
+exports.updateSQLQuery = (options) => {
 
-  let baseQuery = `UPDATE reviews SET ${columnAndValues} WHERE id = ${id}`;
   let columnAndValues = ``;
+  let baseQuery = ``;
 
   for (let column in options) {
     let baseTemplate = `${column} = ${options[column]}`;
-    columnAndValues = baseTemplate + ', ';
+
+    if (column === 'purchase_type') {
+      baseTemplate = `${column} = '${options[column]}'`;
+    }
+
+    if (column === 'date_posted') {
+      baseTemplate = `${column} = '${options[column]}'`;
+    }
+
+    if (column === 'review_text') {
+      baseTemplate = `${column} = '${options[column]}'`;
+    }
+
+    columnAndValues += baseTemplate + ',';
   }
 
   //remove last comma
   columnAndValues = columnAndValues.substring(0, columnAndValues.length - 1);
+  //adding empty space at the end to seperate SQL commands
+  columnAndValues += ' ';
+
+  baseQuery = `UPDATE reviews SET ${columnAndValues} WHERE id = ${options.id}`;
 
   return baseQuery;
 }
 
 exports.deleteSQLQuery = (id) => {
 
-  let baseQuery = `DELETE FROM reviews WHERE id_user = ${id}`;
+  let baseQuery = `DELETE FROM reviews WHERE id = ${id}`;
 
   return baseQuery;
 }
