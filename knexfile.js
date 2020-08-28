@@ -6,9 +6,11 @@ module.exports = {
     client: 'pg',
     connection: {
       host: '127.0.0.1',
-      user: process.env.PG_USER,
-      password: process.env.PG_PASS || '',
-      database: 'steam_reviews_test'
+      // user: process.env.PG_USER,
+      // password: process.env.PG_PASS || '',
+      user: 'micko',
+      password: 'test',
+      database: 'steam_reviews'
     },
     migrations: {
       directory: path.resolve(__dirname, 'db', 'migrations')
@@ -21,8 +23,8 @@ module.exports = {
     client: 'pg',
     connection: process.env.PGDB_URI || {
       host: '127.0.0.1',
-      user: process.env.PG_USER,
-      password: process.env.PG_PASS,
+      user: 'micko',
+      password: 'test',
       database: 'steam_reviews'
     },
     migrations: {

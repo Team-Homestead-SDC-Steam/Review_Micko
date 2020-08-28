@@ -7,7 +7,7 @@ const expressStaticGzip = require('express-static-gzip');
 const app = express();
 const router = express.Router();
 
-const { getPurchaseTypeDataForGameId, getReviewsByGameIdWithOptions, getUserById, getBadgeById } = require('../db/index');
+const { getPurchaseTypeDataForGameId, getReviewsByGameIdWithOptions, getUserById, getBadgeById, createNewReview, updateReviewById, deleteReviewById } = require('../db/index');
 const { asyncForEach } = require('./asyncForEach');
 
 app.use('/api', router);
@@ -64,17 +64,58 @@ router.get('/gamereviews/:gameid', async (req, res) => {
   }
 });
 
-router.get('/reviewcount/:gameid', (req, res) => {
-  fetch(`http://ec2-54-185-79-51.us-west-2.compute.amazonaws.com:3002/api/reviewcount/${req.params.gameid}`)
-    .then(response => response.json())
-    .then(results => {
-      res.status(200).json(results);
-    })
-    .catch(e => {
-      console.error(e);
-      res.status(500).json({ error: 'Error fetching review counts' });
-    });
-});
+// router.get('/reviewcount/:gameid', (req, res) => {
+//   fetch(`http://ec2-54-185-79-51.us-west-2.compute.amazonaws.com:3002/api/reviewcount/${req.params.gameid}`)
+//     .then(response => response.json())
+//     .then(results => {
+//       res.status(200).json(results);
+//     })
+//     .catch(e => {
+//       console.error(e);
+//       res.status(500).json({ error: 'Error fetching review counts' });
+//     });
+// });
+
+router.post('/create/:id_game', (req, res) => {
+  let options = {
+    ...req.params,
+    ...req.query
+  }
+
+  createNewReview(options).then(result => {
+    res.send(200);
+  })
+  .catch(e => {
+    res.send(500);
+  })
+
+})
+
+router.patch('/update/:id', (req, res) => {
+  let options = {
+    ...req.params,
+    ...req.query
+  }
+
+  console.log(options);
+  updateReviewById(options).then(result => {
+    res.send(200);
+  })
+  .catch(e => {
+    res.send(500);
+  })
+})
+
+router.delete('/delete/:id', (req, res) => {
+  let {id} = req.params;
+  deleteReviewById(id).then(result => {
+    res.send(200);
+  })
+  .catch(e => {
+    console.error(e);
+    res.send(500);
+  })
+})
 
 const server = app.listen(process.env.PORT || 3001, () => {
   console.log(`Server listening on port ${process.env.PORT || 3001}`);
