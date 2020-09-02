@@ -41,15 +41,15 @@ let writeNreviews = (writer, encoding, callback) => {
       let received_free = randomBool();
       let review_text = faker.lorem.paragraph();
 
-      const lineToWrite = `{"id_user": ${id_user},"id_game": ${id_game},"is_recommended": ${is_recommended},"hours_on_record": ${hours_on_record},"hours_at_review_time": ${hours_at_review_time},"purchase_type": "${purchase_type}","date_posted": "${date_posted}","received_free": ${received_free},"review_text": "${review_text}","num_found_helpful": ${num_found_helpful},"num_found_funny": ${num_found_funny},"num_comments": ${num_comments}},\n`
+      const lineToWrite = `{"id_user": ${id_user},"id_game": ${id_game},"is_recommended": ${is_recommended},"hours_on_record": ${hours_on_record},"hours_at_review_time": ${hours_at_review_time},"purchase_type": "${purchase_type}","date_posted": "${date_posted}","received_free": ${received_free},"review_text": "${review_text}","num_found_helpful": ${num_found_helpful},"num_found_funny": ${num_found_funny},"num_comments": ${num_comments}}`
 
       console.log(`Wrote **${i}** records`);
-      
+
       if (i === 0) {
         console.log("DONE!")
-        writer.write(']', encoding, callback);
+        writer.write(lineToWrite + ']', encoding, callback);
       } else {
-        notFull = writer.write(lineToWrite, encoding);
+        notFull = writer.write(lineToWrite + ', \n', encoding);
       }
 
     } while (i > 0 && notFull) {
