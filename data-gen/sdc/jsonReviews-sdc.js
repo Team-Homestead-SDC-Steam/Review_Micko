@@ -19,15 +19,16 @@ function randomDate(start, end) {
 
 
 let writeNreviews = (writer, encoding, callback) => {
-  let i = 100; //10million
+  let i = 10000000; //10million
+  let id = 1;
 
-  writer.write('[', 'utf-8');
+  writer.write('{ "data": [', 'utf-8');
 
   let write = () => {
     let notFull = true;
-
     do {
       i--;
+      id++;
       let num_comments = generateRandomNum(0, 300, false);
       let num_found_funny = generateRandomNum(0, 200, false);
       let num_found_helpful = generateRandomNum(0, 100, false);
@@ -41,13 +42,13 @@ let writeNreviews = (writer, encoding, callback) => {
       let received_free = randomBool();
       let review_text = faker.lorem.paragraph();
 
-      const lineToWrite = `{"id_user": ${id_user},"id_game": ${id_game},"is_recommended": ${is_recommended},"hours_on_record": ${hours_on_record},"hours_at_review_time": ${hours_at_review_time},"purchase_type": "${purchase_type}","date_posted": "${date_posted}","received_free": ${received_free},"review_text": "${review_text}","num_found_helpful": ${num_found_helpful},"num_found_funny": ${num_found_funny},"num_comments": ${num_comments}}`
+      const lineToWrite = `{"_id":"${id}", "id_user": ${id_user},"id_game": ${id_game},"is_recommended": ${is_recommended},"hours_on_record": ${hours_on_record},"hours_at_review_time": ${hours_at_review_time},"purchase_type": "${purchase_type}","date_posted": "${date_posted}","received_free": ${received_free},"review_text": "${review_text}","num_found_helpful": ${num_found_helpful},"num_found_funny": ${num_found_funny},"num_comments": ${num_comments}}`
 
       console.log(`Wrote **${i}** records`);
 
       if (i === 0) {
         console.log("DONE!")
-        writer.write(lineToWrite + ']', encoding, callback);
+        writer.write(lineToWrite + '] }', encoding, callback);
       } else {
         notFull = writer.write(lineToWrite + ', \n', encoding);
       }

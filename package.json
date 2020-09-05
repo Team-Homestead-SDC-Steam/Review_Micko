@@ -12,7 +12,8 @@
     "lint": "eslint client/** --fix",
     "start": "node server/index.js",
     "build": "webpack --mode production",
-    "analyze": "webpack --profile --json > stats.json && webpack-bundle-analyzer stats.json public"
+    "analyze": "webpack --profile --json > stats.json && webpack-bundle-analyzer stats.json public",
+    "sdcSeedCouch": "cat ./data-gen/sdc/reviews.json | couchimport --database steam-reviews --type json --jsonpath \"data.*\" --url \"http://admin:test@127.0.0.1:5984\""
   },
   "repository": {
     "type": "git",
@@ -65,6 +66,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "knex": "^0.21.1",
+    "nano": "^8.2.2",
     "pg": "^8.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

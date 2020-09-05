@@ -115,3 +115,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# ignore generated data
+.data-gen/sdc/reviews.json
+.data-gen/sdc/reviews.csv
