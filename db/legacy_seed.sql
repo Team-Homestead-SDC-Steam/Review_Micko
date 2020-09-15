@@ -30,7 +30,7 @@ CREATE TABLE users (
   is_in_game BOOLEAN,
   -- in_game_id declaration here mocks Foreign Key constraint referencing games(id),
   -- since I don't actually need the games table aside from its primary key column
-  in_game_id INTEGER CONSTRAINT game_id_range CHECK (in_game_id >= 1 AND in_game_id <= 100),
+  in_game_id INTEGER CONSTRAINT game_id_range CHECK (in_game_id >= 1 AND in_game_id <= 30000),
   in_game_status TEXT
 );
 
@@ -41,7 +41,7 @@ CREATE TABLE reviews (
   id_user INTEGER REFERENCES users(id),
   -- id_game declaration here mocks Foreign Key constraint referencing games(id),
   -- since I don't actually need the games table aside from its primary key column
-  id_game INTEGER NOT NULL CONSTRAINT game_id_range CHECK (id_game >= 1 AND id_game <= 100),
+  id_game INTEGER NOT NULL CONSTRAINT game_id_range CHECK (id_game >= 1 AND id_game <= 30000),
   is_recommended BOOLEAN,
   -- Numeric(precision, scale): precision indicates total number of digits in float,
   -- while scale indicates digits to the right of the decimal. I.E. #####.# format

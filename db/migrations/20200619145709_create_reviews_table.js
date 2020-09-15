@@ -4,7 +4,7 @@ exports.up = function(knex) {
     'CREATE TABLE reviews(' +
       'id SERIAL PRIMARY KEY,' +
       'id_user INTEGER REFERENCES users(id),' +
-      'id_game INTEGER NOT NULL CONSTRAINT game_id_range CHECK(id_game >= 1 AND id_game <= 100),' +
+      'id_game INTEGER NOT NULL CONSTRAINT game_id_range CHECK(id_game >= 1 AND id_game <= 30000),' +
       'is_recommended BOOLEAN,' +
       'hours_on_record NUMERIC(5, 1),' +
       'hours_at_review_time NUMERIC(5, 1) CHECK(hours_at_review_time <= hours_on_record),' +

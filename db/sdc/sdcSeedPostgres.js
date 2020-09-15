@@ -1,7 +1,6 @@
 var fs = require('fs');
 var { Pool } = require('pg');
 var copyFrom = require('pg-copy-streams').from;
-const csv = require('csv-parser')
 const path = require('path');
 
 var pool = new Pool({

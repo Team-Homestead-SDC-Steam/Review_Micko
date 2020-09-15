@@ -22,17 +22,17 @@ app.get('/app/:gameid', (req, res) => {
 
 router.get('/gamereviews/:gameid', async (req, res) => {
   let { gameid } = req.params;
-  if (parseInt(gameid) <= 0 || parseInt(gameid) > 100) {
+  console.log(req.originalUrl)
+  if (parseInt(gameid) <= 0 || parseInt(gameid) > 30000) {
     res.status(400).json({ error: 'Invalid game ID. Please use a number between 1 and 100.' });
     return;
   }
   try {
     // Get steamPurchased, otherPurchased counts via db call
     let { direct, key } = await getPurchaseTypeDataForGameId(gameid);
-
     // Get review data, sorted/filtered according to URLSearchParams
     let data = await getReviewsByGameIdWithOptions(gameid, req.query);
-
+    console.log(data.length);
     // Attach user, badge info to each review with separate db calls
     // asyncForEach > forEach b/c forEach doesn't work well with asynchronous callbacks
     await asyncForEach(data, async (review) => {
@@ -43,7 +43,6 @@ router.get('/gamereviews/:gameid', async (req, res) => {
         review.user.badge = badge;
       }
     });
-
     // If req.query doesn't contain display, or display === 'summary',
     // data needs to be copied & sorted by recently posted after asyncForEach
     let helpful;
@@ -52,6 +51,12 @@ router.get('/gamereviews/:gameid', async (req, res) => {
       helpful = data;
       recent = data.slice().sort((a, b) => Date.parse(a.date_posted) > Date.parse(b.date_posted) ? -1 : 1);
     }
+    // console.log({
+    //   steamPurchasedCount: direct,
+    //   otherPurchasedCount: key,
+    //   data: helpful || data,
+    //   recent
+    // });
     res.status(200).json({
       steamPurchasedCount: direct,
       otherPurchasedCount: key,
@@ -64,17 +69,17 @@ router.get('/gamereviews/:gameid', async (req, res) => {
   }
 });
 
-// router.get('/reviewcount/:gameid', (req, res) => {
-//   fetch(`http://ec2-54-185-79-51.us-west-2.compute.amazonaws.com:3002/api/reviewcount/${req.params.gameid}`)
-//     .then(response => response.json())
-//     .then(results => {
-//       res.status(200).json(results);
-//     })
-//     .catch(e => {
-//       console.error(e);
-//       res.status(500).json({ error: 'Error fetching review counts' });
-//     });
-// });
+router.get('/reviewcount/:gameid', (req, res) => {
+  fetch(`http://ec2-54-185-79-51.us-west-2.compute.amazonaws.com:3002/api/reviewcount/${req.params.gameid}`)
+    .then(response => response.json())
+    .then(results => {
+      res.status(200).json(results);
+    })
+    .catch(e => {
+      console.error(e);
+      res.status(500).json({ error: 'Error fetching review counts' });
+    });
+});
 
 router.post('/create/:id_game', (req, res) => {
   let options = {

@@ -1,7 +1,11 @@
 const knex = require('../knex.js')
 
-let getReviewById = async (id) => {
-  let result = await knex('reviews').where({id})
+let getReviewsByGameId = async (id) => {
+  //get reviews joined by user table based on user id, joined by badges based on user's badges id
+  // let result = await knex('reviews').where({id})
+
+   let result = await knex.raw(`SELECT * FROM reviews AS r JOIN users AS u ON r.id_user = u.id WHERE r.id = 1`);
+
   console.log(result);
   return result;
 }
@@ -9,22 +13,29 @@ let getReviewById = async (id) => {
 let insertReview = async (data) => {
   //assuming that the data shape and keys are correct (will add checks later on)
   let insert = await knex('reviews').insert(data);
-  console.log(insert);
   return insert;
 }
 
 let updateById = async (id, data) => {
   //assuming that data has correct matching keys
   let update = await knex('reviews').where({id}).update(data);
-  console.log(update);
   return update;
 }
 
 let deleteById = async (id) => {
   let deleteById = await knex('reviews').where({id}).del();
-  console.log(deleteById);
   return deleteById;
 }
+
+let test = async () => {
+  try {
+    await getReviewsByGameId(1);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+test();
 
 // let coreQueryAndSamples = async () => {
 //   let dataToInsert = {
