@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('newrelic');
 const path = require('path');
 const fetch = require('node-fetch');
 const cors = require('cors');
@@ -69,17 +70,17 @@ router.get('/gamereviews/:gameid', async (req, res) => {
   }
 });
 
-router.get('/reviewcount/:gameid', (req, res) => {
-  fetch(`http://ec2-54-185-79-51.us-west-2.compute.amazonaws.com:3002/api/reviewcount/${req.params.gameid}`)
-    .then(response => response.json())
-    .then(results => {
-      res.status(200).json(results);
-    })
-    .catch(e => {
-      console.error(e);
-      res.status(500).json({ error: 'Error fetching review counts' });
-    });
-});
+// router.get('/reviewcount/:gameid', (req, res) => {
+//   fetch(`http://ec2-54-185-79-51.us-west-2.compute.amazonaws.com:3002/api/reviewcount/${req.params.gameid}`)
+//     .then(response => response.json())
+//     .then(results => {
+//       res.status(200).json(results);
+//     })
+//     .catch(e => {
+//       console.error(e);
+//       res.status(500).json({ error: 'Error fetching review counts' });
+//     });
+// });
 
 router.post('/create/:id_game', (req, res) => {
   let options = {
