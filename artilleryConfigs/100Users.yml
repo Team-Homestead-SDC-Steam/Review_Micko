@@ -21,8 +21,6 @@ scenarios:
   - name: "Get positive & negative reviews & playtime constraints"
     flow:
       - get:
-          url: "/api/gamereviews/{{ gameId }}"
-      - get:
           url: "/api/gamereviews/{{ gameId }}?review_type=positive"
       - get:
           url: "/api/gamereviews/{{ gameId }}?review_type=negative"

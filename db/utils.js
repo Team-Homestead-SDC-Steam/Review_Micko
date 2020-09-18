@@ -29,7 +29,7 @@ exports.filterInvalid = ({ review_type, purchase_type, from, to, exclude, play_m
  */
 exports.buildSQLQuery = (gameId, options) => {
   let { review_type, purchase_type, from, to, exclude, play_min, play_max, display } = options;
-
+  console.log(options);
   /** All raw queries together translates to: (with some 'AND'-headed lines optional depending on options arg, and after input validation):
   * SELECT * FROM reviews
   * WHERE id_game = ${gameId}
@@ -181,3 +181,69 @@ exports.deleteSQLQuery = (id) => {
 
   return baseQuery;
 }
+
+exports.buildJoinSQLQuery = (gameId, options) => {
+  let { review_type, purchase_type, from, to, exclude, play_min, play_max, display } = options;
+  console.log(options);
+  /** All raw queries together translates to: (with some 'AND'-headed lines optional depending on options arg, and after input validation):
+  * SELECT * FROM reviews
+  * WHERE id_game = ${gameId}
+  * AND is_recommended = ${review_type === 'positive'}
+  * AND purchase_type = '${purchase_type === 'steam' ? 'direct' : 'key'}'
+  * AND (${exclude ?
+  *          `date_posted <= '${from}' OR date_posted >= '${to}'` :
+  *          `date_posted >= '${from}' AND date_posted <= '${to}'`
+  *     })
+  * AND hours_at_review_time >= ${play_min}
+  * AND hours_at_review_time <= ${play_max}
+  * ORDER BY ${displayOption[display]} DESC;
+  */
+  let rawQueryBase = `SELECT * FROM reviews INNER JOIN users ON users.id = reviews.id_user INNER JOIN badges ON badges.id = users.id_badge WHERE id_game = ${gameId}`;
+  let isRecommendedStr = review_type && review_type !== 'all' ?
+    ` AND is_recommended = ${review_type === 'positive'}` :
+    '';
+  let purchaseTypeStr = purchase_type && purchase_type !== 'all' ?
+    ` AND purchase_type = '${purchase_type === 'steam' ? 'direct' : 'key'}'` :
+    '';
+
+  // If exclude is true, use OR filter instead of AND
+  let excludeStr = exclude === 'true' && from && to ?
+    ` AND (date_posted < '${from}' OR date_posted > '${to}')` :
+    '';
+  let datePostedFromStr = !excludeStr && from ?
+    ` AND date_posted >= '${from}'` :
+    '';
+  let datePostedToStr = !excludeStr && to ?
+    ` AND date_posted <= '${to}'` :
+    '';
+  let hoursMinStr = play_min ?
+    ` AND hours_at_review_time >= ${play_min}` :
+    '';
+  let hoursMaxStr = play_max ?
+    ` AND hours_at_review_time <= ${play_max}` :
+    '';
+
+  let displayStr = '';
+  let displayOptions = {
+    'helpful': ' ORDER BY num_found_helpful DESC',
+    'recent': ' ORDER BY date_posted DESC',
+    'funny': ' ORDER BY num_found_funny DESC'
+  };
+  if (display === 'summary' || !['summary', 'helpful', 'recent', 'funny'].includes(display)) {
+    // Two reviews lists: left (Most Helpful) & right (Recently Posted)
+    // Two sets of data to return -- order by helpful here, then sort by recent before returning in getReviewsByGameIdWithOptions
+    displayStr = displayOptions['helpful'];
+  } else {
+    displayStr = displayOptions[display];
+  }
+
+  return rawQueryBase +
+    isRecommendedStr +
+    purchaseTypeStr +
+    excludeStr +
+    datePostedFromStr +
+    datePostedToStr +
+    hoursMinStr +
+    hoursMaxStr +
+    displayStr;
+};
