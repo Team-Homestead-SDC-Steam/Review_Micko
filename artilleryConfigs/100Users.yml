@@ -1,0 +1,30 @@
+config:
+  target: "http://localhost:3001"
+  phases:
+    - duration: 120
+      arrivalRate: 1
+      name: Warm-up
+    - duration: 600
+      arrivalRate: 1
+      rampTo: 10
+      maxVusers: 100
+      name: Ramp up user count up to 10 per second up to 100 users
+  payload:
+    path: "gameIds.csv"
+    fields:
+      - "gameId"
+scenarios:
+  - name: "Get ALL reviews of game with"
+    flow:
+      - get:
+          url: "/api/gamereviews/{{ gameId }}"
+  - name: "Get positive & negative reviews & playtime constraints"
+    flow:
+      - get:
+          url: "/api/gamereviews/{{ gameId }}?review_type=positive"
+      - get:
+          url: "/api/gamereviews/{{ gameId }}?review_type=negative"
+      - get:
+          url: "/api/gamereviews/{{ gameId }}?review_type=negative&play_max=25"
+      - get:
+          url: "/api/gamereviews/{{ gameId }}?review_type=positive&play_max=100"

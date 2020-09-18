@@ -1,0 +1,33 @@
+config:
+  target: "http://localhost:3001"
+  phases:
+    - duration: 100
+      arrivalRate: 1
+      name: First 30 users
+    - duration: 100
+      arrivalRate: 2
+      name: Double User Count
+    - duration: 600
+      arrivalRate: 2
+      name: Increasing user amount
+  payload:
+    path: "gameIds.csv"
+    fields:
+      - "gameId"
+scenarios:
+  - name: "Get ALL reviews of game with"
+    flow:
+      - get:
+          url: "/api/gamereviews/{{ gameId }}"
+  - name: "Get positive & negative reviews & playtime constraints"
+    flow:
+      - get:
+          url: "/api/gamereviews/{{ gameId }}"
+      - get:
+          url: "/api/gamereviews/{{ gameId }}?review_type=positive"
+      - get:
+          url: "/api/gamereviews/{{ gameId }}?review_type=negative"
+      - get:
+          url: "/api/gamereviews/{{ gameId }}?review_type=negative&play_max=25"
+      - get:
+          url: "/api/gamereviews/{{ gameId }}?review_type=positive&play_max=100"

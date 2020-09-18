@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('newrelic');
 const path = require('path');
 const fetch = require('node-fetch');
 const cors = require('cors');
@@ -7,7 +8,7 @@ const expressStaticGzip = require('express-static-gzip');
 const app = express();
 const router = express.Router();
 
-const { getPurchaseTypeDataForGameId, getReviewsByGameIdWithOptions, getUserById, getBadgeById, createNewReview, updateReviewById, deleteReviewById } = require('../db/index');
+const { getPurchaseTypeDataForGameId, getReviewsByGameIdWithOptions, getUserById, getBadgeById, createNewReview, updateReviewById, deleteReviewById, getReviewsByGameIdWithUsersAndBadges } = require('../db/index');
 const { asyncForEach } = require('./asyncForEach');
 
 app.use('/api', router);
@@ -29,57 +30,62 @@ router.get('/gamereviews/:gameid', async (req, res) => {
   }
   try {
     // Get steamPurchased, otherPurchased counts via db call
-    let { direct, key } = await getPurchaseTypeDataForGameId(gameid);
-    // Get review data, sorted/filtered according to URLSearchParams
-    let data = await getReviewsByGameIdWithOptions(gameid, req.query);
-    console.log(data.length);
+    // let { direct, key } = await getPurchaseTypeDataForGameId(gameid);
+
+    // // Get review data, sorted/filtered according to URLSearchParams
+    // let data = await getReviewsByGameIdWithOptions(gameid, req.query);
+
+    let payload = await getReviewsByGameIdWithUsersAndBadges(gameid, req.query);
+    console.log(payload.data.length);
+
     // Attach user, badge info to each review with separate db calls
     // asyncForEach > forEach b/c forEach doesn't work well with asynchronous callbacks
-    await asyncForEach(data, async (review) => {
-      let [ user ] = await getUserById(review.id_user);
-      review.user = user;
-      if (review.user.id_badge) {
-        let [ badge ] = await getBadgeById(review.user.id_badge);
-        review.user.badge = badge;
-      }
-    });
+
+    // await asyncForEach(data, async (review) => {
+    //   let [ user ] = await getUserById(review.id_user);
+    //   review.user = user;
+    //   if (review.user.id_badge) {
+    //     let [ badge ] = await getBadgeById(review.user.id_badge);
+    //     review.user.badge = badge;
+    //   }
+    // });
+
     // If req.query doesn't contain display, or display === 'summary',
     // data needs to be copied & sorted by recently posted after asyncForEach
     let helpful;
     let recent;
     if ((req.query.display && req.query.display === 'summary') || !req.query.display) {
-      helpful = data;
-      recent = data.slice().sort((a, b) => Date.parse(a.date_posted) > Date.parse(b.date_posted) ? -1 : 1);
+      // helpful = data;
+      // recent = data.slice().sort((a, b) => Date.parse(a.date_posted) > Date.parse(b.date_posted) ? -1 : 1);
+      recent = payload.data.slice().sort((a, b) => Date.parse(a.date_posted) > Date.parse(b.date_posted) ? -1 : 1);
+      payload.recent = recent;
     }
-    // console.log({
+    //console.log(payload);
+    res.status(200).json(payload);
+
+    // res.status(200).json({
     //   steamPurchasedCount: direct,
     //   otherPurchasedCount: key,
     //   data: helpful || data,
     //   recent
     // });
-    res.status(200).json({
-      steamPurchasedCount: direct,
-      otherPurchasedCount: key,
-      data: helpful || data,
-      recent
-    });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: 'Error retrieving reviews' });
   }
 });
 
-router.get('/reviewcount/:gameid', (req, res) => {
-  fetch(`http://ec2-54-185-79-51.us-west-2.compute.amazonaws.com:3002/api/reviewcount/${req.params.gameid}`)
-    .then(response => response.json())
-    .then(results => {
-      res.status(200).json(results);
-    })
-    .catch(e => {
-      console.error(e);
-      res.status(500).json({ error: 'Error fetching review counts' });
-    });
-});
+// router.get('/reviewcount/:gameid', (req, res) => {
+//   fetch(`http://ec2-54-185-79-51.us-west-2.compute.amazonaws.com:3002/api/reviewcount/${req.params.gameid}`)
+//     .then(response => response.json())
+//     .then(results => {
+//       res.status(200).json(results);
+//     })
+//     .catch(e => {
+//       console.error(e);
+//       res.status(500).json({ error: 'Error fetching review counts' });
+//     });
+// });
 
 router.post('/create/:id_game', (req, res) => {
   let options = {
