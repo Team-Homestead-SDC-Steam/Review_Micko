@@ -1,5 +1,5 @@
 require('dotenv').config();
-require('newrelic');
+//require('newrelic');
 const path = require('path');
 const fetch = require('node-fetch');
 const cors = require('cors');
@@ -7,10 +7,12 @@ const express = require('express');
 const expressStaticGzip = require('express-static-gzip');
 const app = express();
 const router = express.Router();
+const bodyParser = require('body-parser');
 
 const { getPurchaseTypeDataForGameId, getReviewsByGameIdWithOptions, getUserById, getBadgeById, createNewReview, updateReviewById, deleteReviewById, getReviewsByGameIdWithUsersAndBadges } = require('../db/index');
-const { asyncForEach } = require('./asyncForEach');
+//const { asyncForEach } = require('./asyncForEach');
 
+app.use(bodyParser.json());
 app.use('/api', router);
 app.use(express.json());
 app.use(cors());
@@ -90,15 +92,14 @@ router.get('/gamereviews/:gameid', async (req, res) => {
 router.post('/create/:id_game', (req, res) => {
   let options = {
     ...req.params,
-    ...req.query
+    ...req.body
   }
-
-  createNewReview(options).then(result => {
-    res.send(200);
-  })
-  .catch(e => {
-    res.send(500);
-  })
+  console.log("Inserting new reviews");
+  //console.log(options);
+  createNewReview(options).then((result) => {
+    console.log("Success!");
+    res.send(201);
+  }).catch(e => console.error(e));
 
 })
 
