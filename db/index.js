@@ -52,6 +52,7 @@ exports.getReviewsByGameIdWithUsersAndBadges = async (gameId, options) => {
         num_found_helpful: data.num_found_helpful,
         num_found_funny: data.num_found_funny,
         num_comments: data.num_comments,
+        review_text: data.review_text,
         user: {
           id: data.id_user,
           username: data.username,
@@ -119,11 +120,7 @@ exports.getBadgeById = (badgeId) => {
 //START OF CRUD API
 
 exports.createNewReview = (options) => {
-  let query = createSQLQuery(options)
-
-  return db.raw(query)
-  .then(result => result)
-  .catch(error => console.error(error));
+  return db('reviews').insert(options);
 }
 
 exports.updateReviewById = (id, option) => {

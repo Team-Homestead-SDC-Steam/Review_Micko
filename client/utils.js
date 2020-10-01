@@ -61,7 +61,7 @@ export const fetchAllGameReviews = (gameid) => {
 
   return fetch(`/api/reviewcount/${gameid}`)
     .then(response => response.json());
-};+
+};
 
 const buildQuery = (filters) => {
   // Review Type: Positive, Negative

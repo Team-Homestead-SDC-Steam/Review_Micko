@@ -15,4 +15,4 @@ let generateAndWriteRandomIds = (writer, amountOfIds) => {
 }
 
 //realistically a user would -probably- only look through 15 different types of games(?)
-generateAndWriteRandomIds(writeIdData, 15);
+generateAndWriteRandomIds(writeIdData, 500);
