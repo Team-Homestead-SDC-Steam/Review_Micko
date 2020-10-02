@@ -9,8 +9,30 @@ const app = express();
 const router = express.Router();
 const bodyParser = require('body-parser');
 
+
 const { getPurchaseTypeDataForGameId, getReviewsByGameIdWithOptions, getUserById, getBadgeById, createNewReview, updateReviewById, deleteReviewById, getReviewsByGameIdWithUsersAndBadges } = require('../db/index');
 //const { asyncForEach } = require('./asyncForEach');
+
+//implementing clustering
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
+console.log(`We have ${numCPUs} available`);
+
+if (cluster.isMaster) {
+  console.log(`Master ${process.pid} is running`);
+
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+  cluster.on('exit', (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} died`);
+  });
+} else {
+  console.log(`Worker ${process.pid} started`);
+  app.listen(3001, () => {
+    console.log('Your node is running on port 3001');
+  });
+}
 
 app.use(bodyParser.json());
 app.use('/api', router);
