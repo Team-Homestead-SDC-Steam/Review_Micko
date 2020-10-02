@@ -21,6 +21,7 @@ export const getPathId = () => {
       pathId = 1;
     }
   }
+  console.log(pathId);
   return pathId;
 };
 
