@@ -55,7 +55,7 @@ export const getHumanReadableFromISO = (ISOString) => {
  * @returns {Promise->Object}
  */
 export const fetchAllGameReviews = (gameid) => {
-  if (!gameid || gameid > 100 || gameid < 1) {
+  if (!gameid || gameid > 30000 || gameid < 1) {
     throw new Error('Invalid game id');
   }
 
