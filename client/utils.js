@@ -17,11 +17,11 @@ export const getPathId = () => {
   let pathId = 1;
   if (pathArr.length) {
     pathId = parseInt(pathArr.slice(-1)[0]);
+    console.log(pathId);
     if (Number.isNaN(pathId) || pathId > 30000 || pathId < 1) {
       pathId = 1;
     }
   }
-  console.log(pathId);
   return pathId;
 };
 
