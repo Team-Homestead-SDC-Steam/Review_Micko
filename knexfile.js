@@ -9,7 +9,7 @@ module.exports = {
       // user: process.env.PG_USER,
       // password: process.env.PG_PASS || '',
       user: 'micko',
-      password: 'test',
+      password: '',
       database: 'steam_reviews'
     },
     migrations: {
@@ -24,7 +24,7 @@ module.exports = {
     connection: process.env.PGDB_URI || {
       host: '127.0.0.1',
       user: 'micko',
-      password: 'test',
+      password: '',
       database: 'steam_reviews'
     },
     migrations: {
