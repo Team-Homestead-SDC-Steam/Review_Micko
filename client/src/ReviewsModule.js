@@ -19,7 +19,6 @@ const ReviewsModule = ({ gameid }) => {
   /**
  * STATIC VARIABLES
  */
-  console.log(gameid);
   const filterMenuOrder = ['Review Type', 'Purchase Type', 'Language', 'Date Range', 'Playtime', 'Display As'];
   const filterMenuOpts = {
     'Review Type': ['All', 'Positive', 'Negative'],
@@ -99,6 +98,7 @@ const ReviewsModule = ({ gameid }) => {
    */
   useEffect(() => {
     // Fetch to review-graph endpoint for review count, percent, sentiment
+    console.log(gameid)
     fetchAllGameReviews(gameid)
       .then(gameRating => {
         let { summary, total, positive, negative } = gameRating;
