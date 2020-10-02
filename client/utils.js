@@ -95,7 +95,7 @@ const buildQuery = (filters) => {
  * @returns {Promise->Object}
  */
 export const fetchReviewInfo = (gameid, filters) => {
-  if (!gameid || gameid > 100 || gameid < 1) {
+  if (!gameid || gameid > 30000 || gameid < 1) {
     throw new Error('Invalid game id');
   }
 
