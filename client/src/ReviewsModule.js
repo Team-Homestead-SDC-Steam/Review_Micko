@@ -19,6 +19,7 @@ const ReviewsModule = ({ gameid }) => {
   /**
  * STATIC VARIABLES
  */
+  console.log(gameid);
   const filterMenuOrder = ['Review Type', 'Purchase Type', 'Language', 'Date Range', 'Playtime', 'Display As'];
   const filterMenuOpts = {
     'Review Type': ['All', 'Positive', 'Negative'],
