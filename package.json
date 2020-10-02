@@ -11,6 +11,7 @@
     "client:dev": "webpack-dev-server --mode development --hot --open",
     "lint": "eslint client/** --fix",
     "start": "node server/index.js",
+    "start_database": "node server/databaseServer.js",
     "build": "webpack --mode production",
     "analyze": "webpack --profile --json > stats.json && webpack-bundle-analyzer stats.json public",
     "sdcSeedCouch": "cat ./data-gen/sdc/reviews.json | couchimport --database steam-reviews --type json --jsonpath \"data.*\" --url \"http://admin:test@127.0.0.1:5984\"",
