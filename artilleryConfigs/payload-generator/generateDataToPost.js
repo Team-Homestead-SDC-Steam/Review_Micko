@@ -1,7 +1,7 @@
 const faker = require('faker');
 
 let generateRandomNum = (min = 1, max, float, precision = 10) => {
-  return float ? Math.floor((Math.random() * (max - min) + 1000)) / precision : Math.floor((Math.random() * max) + min)
+  return float ? Math.floor((Math.random() * (max - min) + 1000)) / precision : Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 let randomBool = () => {
@@ -23,7 +23,7 @@ let generateData = (userContext, events, done) => {
   let purchase_type = randomBool ? 'direct' : 'key';
   let date_posted = randomDate(new Date(2012, 0, 1), new Date());
   let id_user = generateRandomNum(1, 750, false);
-  let id_game = generateRandomNum(1, 30000, false); //30000 games to distribute 10M reviews
+  let id_game = generateRandomNum(20000, 30000, false); //id between 20k to 30k to target last 10% of data
   let received_free = randomBool();
   let review_text = faker.lorem.paragraph();
 

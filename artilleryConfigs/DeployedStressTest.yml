@@ -1,0 +1,45 @@
+config:
+  target: "http://3.137.180.221:3001"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: 'warm up'
+    - duration: 600
+      arrivalRate: 10
+      rampTo: 1000
+      name: Lets destroy server?
+  processor: "./payload-generator/generateDataToPost.js"
+scenarios:
+  - name: "Get ALL reviews of game with"
+    flow:
+      - function: "generateData"
+      - get:
+          url: "/api/gamereviews/{{ id_game }}"
+  - name: "Get positive & negative reviews & playtime constraints"
+    flow:
+      - function: "generateData"
+      - get:
+          url: "/api/gamereviews/{{ id_game }}?review_type=positive"
+      - get:
+          url: "/api/gamereviews/{{ id_game }}?review_type=negative"
+      - get:
+          url: "/api/gamereviews/{{ id_game }}?review_type=negative&play_max=25"
+      - get:
+          url: "/api/gamereviews/{{ id_game }}?review_type=positive&play_max=100"
+  - name: "Post a new review"
+    flow:
+      - function: "generateData"
+      - post:
+          url: "/api/create/{{ id_game }}"
+          json:
+            num_comments: "{{ num_comments }}"
+            num_found_funny: "{{ num_found_funny}}"
+            num_found_helpful: "{{ num_found_helpful }}"
+            hours_at_review_time: "{{ hours_at_review_time }}"
+            hours_on_record: "{{ hours_on_record }}"
+            is_recommended: "{{ is_recommended }}"
+            purchase_type: "{{ purchase_type }}"
+            date_posted: "{{ date_posted }}"
+            id_user: "{{ id_user }}"
+            received_free: "{{ received_free }}"
+            review_text: "{{ review_text }}"
