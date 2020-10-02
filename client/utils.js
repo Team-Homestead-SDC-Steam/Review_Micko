@@ -17,7 +17,7 @@ export const getPathId = () => {
   let pathId = 1;
   if (pathArr.length) {
     pathId = parseInt(pathArr.slice(-1)[0]);
-    if (Number.isNaN(pathId) || pathId > 100 || pathId < 1) {
+    if (Number.isNaN(pathId) || pathId > 30000 || pathId < 1) {
       pathId = 1;
     }
   }
