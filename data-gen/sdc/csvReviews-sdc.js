@@ -7,7 +7,7 @@ const csvHeader = `id_user,id_game,is_recommended,hours_on_record,hours_at_revie
 writeReviewsData.write(csvHeader, 'utf-8');
 
 let generateRandomNum = (min = 1, max, float, precision = 10) => {
-  return float ? Math.floor((Math.random() * (max - min) + 1000)) / precision : Math.floor((Math.random() * max) + min)
+  return float ? Math.floor((Math.random() * (max - min) + 1000)) / precision : Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 let randomBool = () => {
