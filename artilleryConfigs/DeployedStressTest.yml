@@ -1,13 +1,13 @@
 config:
-  target: "http://3.137.180.221:3001"
+  target: "http://18.220.196.29:3001/api"
   phases:
     - duration: 60
       arrivalRate: 5
       name: 'warm up'
-    - duration: 600
-      arrivalRate: 10
-      rampTo: 1000
-      name: Lets destroy server?
+    # - duration: 600
+    #   arrivalRate: 10
+    #   rampTo: 1000
+    #   name: Lets destroy server?
   processor: "./payload-generator/generateDataToPost.js"
 scenarios:
   - name: "Get ALL reviews of game with"

@@ -64,7 +64,7 @@ app.post('/api/create/:id_game', (req, res) => {
     ...req.params,
     ...req.body
   }
-  fetch(`http://3.137.180.221:4000/create/${gameid}`, {
+  fetch(`http://3.137.180.221:4000/create/${options.id_game}`, {
     method: 'post',
     body: JSON.stringify(options),
     headers: { 'Content-Type': 'application/json' },
