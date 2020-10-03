@@ -69,7 +69,7 @@ app.post('/api/create/:id_game', (req, res) => {
     body: JSON.stringify(options),
     headers: { 'Content-Type': 'application/json' },
   })
-  .then(res => {
+  .then(response => {
     console.log("Success posting");
     res.status(201);
   })
