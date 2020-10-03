@@ -45,24 +45,26 @@ app.get('/app/:gameid', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
 });
 
-app.get('/gamereviews/:gameid', (req, res) => {
+app.get('/api/gamereviews/:gameid', async (req, res) => {
   let { gameid } = req.params;
-  fetch(`http://3.137.180.221:3001/gamereviews/${gameid}`).then(payload => {
+  try {
     console.log('Got data!')
+    let fetchedData = await fetch(`http://3.137.180.221:4000/gamereviews/${gameid}`)
+    let payload = await fetchedData.json();
+    // console.log(data);
     res.status(200).json(payload);
-  })
-  .catch(err => {
+  } catch(err) {
     console.error(err);
     res.status(500).json({ error: 'Error retrieving reviews' });
-  })
+  }
 })
 
-app.post('/create/:id_game', (req, res) => {
+app.post('/api/create/:id_game', (req, res) => {
   let options = {
     ...req.params,
     ...req.body
   }
-  fetch(`http://3.137.180.221:3001/create/${gameid}`, {
+  fetch(`http://3.137.180.221:4000/create/${gameid}`, {
     method: 'post',
     body: JSON.stringify(options),
     headers: { 'Content-Type': 'application/json' },
