@@ -18,7 +18,7 @@ export const getPathId = () => {
   if (pathArr.length) {
     pathId = parseInt(pathArr.slice(-1)[0]);
     console.log(pathId);
-    if (Number.isNaN(pathId) || pathId > 30000 || pathId < 1) {
+    if (Number.isNaN(pathId) || pathId > 10000000 || pathId < 1) {
       pathId = 1;
     }
   }
@@ -56,7 +56,7 @@ export const getHumanReadableFromISO = (ISOString) => {
  * @returns {Promise->Object}
  */
 export const fetchAllGameReviews = (gameid) => {
-  if (!gameid || gameid > 30000 || gameid < 1) {
+  if (!gameid || gameid > 10000000 || gameid < 1) {
     throw new Error('Invalid game id');
   }
 
@@ -96,7 +96,7 @@ const buildQuery = (filters) => {
  * @returns {Promise->Object}
  */
 export const fetchReviewInfo = (gameid, filters) => {
-  if (!gameid || gameid > 30000 || gameid < 1) {
+  if (!gameid || gameid > 10000000 || gameid < 1) {
     throw new Error('Invalid game id');
   }
 

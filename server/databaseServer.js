@@ -10,7 +10,7 @@ app.use(cors());
 app.get('/gamereviews/:gameid', async (req, res) => {
   let { gameid } = req.params;
   console.log(req.originalUrl)
-  if (parseInt(gameid) <= 0 || parseInt(gameid) > 30000) {
+  if (parseInt(gameid) <= 0 || parseInt(gameid) > 10000000) {
     res.status(400).json({ error: 'Invalid game ID. Please use a number between 1 and 30000.' });
     return;
   }

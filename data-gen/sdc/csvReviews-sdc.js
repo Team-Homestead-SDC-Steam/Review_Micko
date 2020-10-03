@@ -22,7 +22,7 @@ function randomDate(start, end) {
 
 
 let writeNreviews = (writer, encoding, callback) => {
-  let i = 10000000; //10million
+  let i = 50000000; //50million
 
   let write = () => {
     let notFull = true;
@@ -38,12 +38,12 @@ let writeNreviews = (writer, encoding, callback) => {
       let purchase_type = randomBool ? 'direct' : 'key';
       let date_posted = randomDate(new Date(2012, 0, 1), new Date());
       let id_user = generateRandomNum(1, 750, false);
-      let id_game = generateRandomNum(1, 30000, false); //30000 games to distribute 10M reviews
+      let id_game = generateRandomNum(1, 10000000, false); //30000 games to distribute 10M reviews
       let received_free = randomBool();
       let review_text = faker.lorem.paragraph();
 
-      if(i < 1000000) {
-        id_game = generateRandomNum(20000, 30000, false); //last 1mill rows will be tied to game_id between 20,000 - 30,000 to use for stress testing
+      if(i < 10000000) {
+        id_game = generateRandomNum(9900000, 10000000, false); //last 1mill rows will be tied to game_id between 9.9M-10M id to use for stress testing
         console.log(id_game);
         if (id_game > 30000) {
           return; //randomNum check to see if  new implementation actually works
