@@ -11,7 +11,7 @@ exports.up = function (knex) {
       'steam_level SMALLINT,' +
       'id_badge INTEGER REFERENCES badges(id),' +
       'is_in_game BOOLEAN,' +
-      'in_game_id INTEGER CONSTRAINT game_id_range CHECK(in_game_id >= 1 AND in_game_id <= 10_000_000),' +
+      'in_game_id INTEGER CONSTRAINT game_id_range CHECK(in_game_id >= 1 AND in_game_id <= 10000000),' +
       'in_game_status TEXT' +
     ');'
   );
