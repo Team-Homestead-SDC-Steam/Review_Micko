@@ -42,13 +42,13 @@ let writeNreviews = (writer, encoding, callback) => {
       let received_free = randomBool();
       let review_text = faker.lorem.paragraph();
 
-      if(i < 10000000) {
-        id_game = generateRandomNum(9900000, 10000000, false); //last 1mill rows will be tied to game_id between 9.9M-10M id to use for stress testing
-        console.log(id_game);
-        if (id_game > 30000) {
-          return; //randomNum check to see if  new implementation actually works
-        }
-      }
+      // if(i < 10000000) {
+      //   id_game = generateRandomNum(9900000, 10000000, false); //last 1mill rows will be tied to game_id between 9.9M-10M id to use for stress testing
+      //   console.log(id_game);
+      //   if (id_game > 10000000) {
+      //     return; //randomNum check to see if  new implementation actually works
+      //   }
+      // }
 
       const lineToWrite = `${id_user},${id_game},${is_recommended},${hours_on_record},${hours_at_review_time},${purchase_type},${date_posted},${received_free},${review_text},${num_found_helpful},${num_found_funny},${num_comments}\n`
       //console.log(`Wrote **${i}** records`);
