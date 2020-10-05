@@ -21,7 +21,7 @@ pool.connect().then(client => {
     client.release();
   }
   var stream = client.query(copyFrom(`COPY reviews (id_user,id_game,is_recommended,hours_on_record,hours_at_review_time,purchase_type,date_posted,received_free,review_text,num_found_helpful,num_found_funny,num_comments) FROM STDIN DELIMITER ',' CSV`))
-  let csvPath = path.resolve(__dirname, 'data-gen','csv-seeds', 'reviews.csv');
+  let csvPath = path.resolve(__dirname,'../', '../', 'data-gen','csv-seeds', 'reviews.csv');
   var fileStream = fs.createReadStream(csvPath);
   fileStream.on('error', done)
   stream.on('error', done)
