@@ -2,8 +2,8 @@ const fs = require('fs');
 const faker = require('faker');
 const writeReviewsData = fs.createWriteStream('./data-gen/csv-seeds/reviews.csv');
 
-//const csvHeader = `id_user,id_game,is_recommended,hours_on_record,hours_at_review_time,purchase_type,date_posted,received_free,review_text,num_found_helpful,num_found_funny,num_comments\n`
-const csvHeader = '';
+const csvHeader = `id_user,id_game,is_recommended,hours_on_record,hours_at_review_time,purchase_type,date_posted,received_free,review_text,num_found_helpful,num_found_funny,num_comments\n`
+//const csvHeader = '';
 
 writeReviewsData.write(csvHeader, 'utf-8');
 
@@ -23,7 +23,7 @@ function randomDate(start, end) {
 
 
 let writeNreviews = (writer, encoding, callback) => {
-  let i = 30000000; //30million
+  let i = 10000000; //30million
 
   let write = () => {
     let notFull = true;
