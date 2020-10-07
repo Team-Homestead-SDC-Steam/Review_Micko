@@ -33,7 +33,7 @@ const fs = require('fs');
 const path = require('path');
 const { copyToTable } = require('../copyToTable');
 const environment = 'test';
-const config = require('../knexfile')[environment];
+const config = require('../../knexfile')[environment];
 const knex = require('knex')(config);
 
 return knex.transaction(async (trx) => {
