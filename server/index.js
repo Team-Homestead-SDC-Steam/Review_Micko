@@ -49,7 +49,7 @@ app.get('/api/gamereviews/:gameid', async (req, res) => {
   let { gameid } = req.params;
   try {
     console.log('Got data!')
-    let fetchedData = await fetch(`http://3.137.180.221:4000/gamereviews/${gameid}`)
+    let fetchedData = await fetch(`http://3.15.142.19:4000/gamereviews/${gameid}`)
     let payload = await fetchedData.json();
     // console.log(data);
     res.status(200).json(payload);
@@ -64,7 +64,7 @@ app.post('/api/create/:id_game', (req, res) => {
     ...req.params,
     ...req.body
   }
-  fetch(`http://3.137.180.221:4000/create/${options.id_game}`, {
+  fetch(`http://3.15.142.19:4000/create/${options.id_game}`, {
     method: 'post',
     body: JSON.stringify(options),
     headers: { 'Content-Type': 'application/json' },
