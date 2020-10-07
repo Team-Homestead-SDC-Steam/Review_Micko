@@ -23,7 +23,7 @@ function randomDate(start, end) {
 
 
 let writeNreviews = (writer, encoding, callback) => {
-  let i = 30000000; //30million
+  let i = 10000000; //30million
 
   let write = () => {
     let notFull = true;
