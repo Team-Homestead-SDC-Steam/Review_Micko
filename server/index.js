@@ -9,6 +9,9 @@ const app = express();
 const router = express.Router();
 const bodyParser = require('body-parser');
 
+//applying redis
+const redis = require('redis');
+const client = redis.createClient();
 
 const { getPurchaseTypeDataForGameId, getReviewsByGameIdWithOptions, getUserById, getBadgeById, createNewReview, updateReviewById, deleteReviewById, getReviewsByGameIdWithUsersAndBadges } = require('../db/index');
 //const { asyncForEach } = require('./asyncForEach');
@@ -47,17 +50,28 @@ app.get('/app/:gameid', (req, res) => {
 
 app.get('/api/gamereviews/:gameid', async (req, res) => {
   let { gameid } = req.params;
-  try {
-    console.log(gameid);
-    console.log('Got data!')
-    let fetchedData = await fetch(`http://3.15.142.19:4000/gamereviews/${gameid}`)
-    let payload = await fetchedData.json();
-    // console.log(data);
-    res.status(200).json(payload);
-  } catch(err) {
-    console.error(err);
-    res.status(500).json({ error: 'Error retrieving reviews' });
-  }
+
+  client.get(gameid, async (err, result) => {
+    if (result) {
+      console.log("yo we got this cached");
+      res.send(result);
+    } else {
+      try {
+        console.log(gameid);
+        console.log('Got data!')
+        let fetchedData = await fetch(`http://3.15.142.19:4000/gamereviews/${gameid}`)
+        let payload = await fetchedData.json();
+
+        client.setex(gameid, 10, JSON.stringify(payload));
+        console.log(`cached ${gameid}`);
+        res.status(200).json(payload);
+      } catch(err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error retrieving reviews' });
+      }
+    }
+  })
+
 })
 
 let batch = [];
