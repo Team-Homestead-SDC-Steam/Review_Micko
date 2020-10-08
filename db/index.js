@@ -138,3 +138,7 @@ exports.deleteReviewById = (id) => {
   .then(result => result)
   .catch(error => console.error(error));
 }
+
+exports.insertReviewsByBatch = (batch) => {
+  return db.batchInsert('reviews', batch);
+}

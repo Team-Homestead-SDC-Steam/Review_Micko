@@ -60,24 +60,40 @@ app.get('/api/gamereviews/:gameid', async (req, res) => {
   }
 })
 
+let batch = [];
+
 app.post('/api/create/:id_game', (req, res) => {
-  let options = {
+  let data = {
     ...req.params,
     ...req.body
   }
-  fetch(`http://3.15.142.19:4000/create/${options.id_game}`, {
-    method: 'post',
-    body: JSON.stringify(options),
-    headers: { 'Content-Type': 'application/json' },
-  })
-  .then(response => {
-    console.log("Success posting");
-    res.status(201);
-  })
-  .catch(e => {
-    console.error(e);
-    res.status(500);
-  })
+
+  let maxSize = 10;
+  if (batch.length < maxSize) {
+    batch.push(data);
+    console.log(batch.length, ' current batch size..');
+    res.send(201);
+  }
+
+  if (batch.length > maxSize) {
+    let temp = {data: batch};
+    console.log('max size reached..posting...');
+    batch = [];
+    fetch(`http://3.15.142.19:4000/create/batch`, {
+      method: 'post',
+      body: JSON.stringify(temp),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    .then(response => {
+      console.log("Success posting");
+      res.status(201);
+    })
+    .catch(e => {
+      console.error(e);
+      res.status(500);
+    })
+  }
+
 })
 // router.get('/gamereviews/:gameid', async (req, res) => {
 //   let { gameid } = req.params;

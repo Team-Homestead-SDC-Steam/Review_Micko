@@ -34,6 +34,17 @@ app.get('/gamereviews/:gameid', async (req, res) => {
   }
 });
 
+app.post('/create/batch', (req, res) => {
+  let batch = req.body.data;
+  insertReviewsByBatch(batch).then(() => {
+    console.log("Inserted Batch!");
+    res.send(200);
+  }).catch(e => {
+    console.error(e);
+    res.send(501);
+  })
+})
+
 app.post('/create/:id_game', (req, res) => {
   let options = req.body;
   console.log("Inserting new reviews");
@@ -45,7 +56,6 @@ app.post('/create/:id_game', (req, res) => {
     console.error(e)
     res.send(501);
   });
-
 })
 
 app.listen(process.env.PORT || 4000, () => {
