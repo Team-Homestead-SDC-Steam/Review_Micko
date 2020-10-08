@@ -9,16 +9,16 @@ const writeIds = fs.createWriteStream('ids.json');
 let writeIdsFunc = (writer, encoding, callback) => {
 
   let write = () => {
-    let idArray = [];
+    let dataObj = {
+      "keys": ["gameid"],
+      "values": []
+    };
     let amount = 500;
     for (let i = 0; i < amount; i++) {
       let id_game = generateRandomNum(1, 10000000, false);
-      idArray.push(`"${id_game}"`);
+      dataObj["values"].push([`${id_game}`]);
     }
-    let dataToWrite = `{
-      "keys":["gameid"],
-      "values": [${idArray}]
-    }`
+    let dataToWrite = JSON.stringify(dataObj)
     writer.write(dataToWrite, encoding, callback);
   }
   write();
