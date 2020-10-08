@@ -140,5 +140,5 @@ exports.deleteReviewById = (id) => {
 }
 
 exports.insertReviewsByBatch = (batch) => {
-  return db.batchInsert('reviews', batch);
+  return db('reviews').insert(batch);
 }

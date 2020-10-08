@@ -75,7 +75,7 @@ app.post('/api/create/:id_game', (req, res) => {
     res.send(201);
   }
 
-  if (batch.length > maxSize) {
+  if (batch.length >= maxSize) {
     let temp = {data: batch};
     console.log('max size reached..posting...');
     batch = [];
