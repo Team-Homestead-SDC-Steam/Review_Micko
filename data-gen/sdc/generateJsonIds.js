@@ -13,7 +13,7 @@ let writeIdsFunc = (writer, encoding, callback) => {
     let amount = 500;
     for (let i = 0; i < amount; i++) {
       let id_game = generateRandomNum(1, 10000000, false);
-      idArray.push(id_game);
+      idArray.push(`"${id_game}"`);
     }
     let dataToWrite = `{
       "keys":["gameid"],
