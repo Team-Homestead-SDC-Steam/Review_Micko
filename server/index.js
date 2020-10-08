@@ -52,6 +52,10 @@ app.get('/api/gamereviews/:gameid', async (req, res) => {
   let { gameid } = req.params;
 
   client.get(gameid, async (err, result) => {
+    if (err) {
+      console.log("CACHE ERROR REDIS RED ALERT RED ALERT");
+      res.status(404);
+    }
     if (result) {
       console.log("yo we got this cached");
       res.send(result);
