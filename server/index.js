@@ -66,8 +66,10 @@ app.get('/api/gamereviews/:gameid', async (req, res) => {
         let fetchedData = await fetch(`http://3.15.142.19:4000/gamereviews/${gameid}`)
         let payload = await fetchedData.json();
 
-        client.setex(gameid, 10, JSON.stringify(payload));
+        client.setex(gameid, 2, JSON.stringify(payload));
+
         console.log(`cached ${gameid}`);
+
         res.status(200).json(payload);
       } catch(err) {
         console.error(err);
