@@ -1,5 +1,5 @@
 require('dotenv').config();
-//require('newrelic');
+require('newrelic');
 const path = require('path');
 const fetch = require('node-fetch');
 const cors = require('cors');
