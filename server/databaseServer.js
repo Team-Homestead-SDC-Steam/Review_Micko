@@ -2,7 +2,7 @@ const cors = require('cors');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const { getReviewsByGameIdWithUsersAndBadges, createNewReview } = require('../db/index');
+const { getReviewsByGameIdWithUsersAndBadges, createNewReview, insertReviewsByBatch } = require('../db/index');
 
 app.use(bodyParser.json());
 app.use(cors());
