@@ -1,5 +1,5 @@
 require('dotenv').config();
-require('newrelic');
+//require('newrelic');
 const path = require('path');
 const fetch = require('node-fetch');
 const cors = require('cors');
@@ -48,6 +48,7 @@ app.get('/app/:gameid', (req, res) => {
 app.get('/api/gamereviews/:gameid', async (req, res) => {
   let { gameid } = req.params;
   try {
+    console.log(gameid);
     console.log('Got data!')
     let fetchedData = await fetch(`http://3.15.142.19:4000/gamereviews/${gameid}`)
     let payload = await fetchedData.json();
