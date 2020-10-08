@@ -36,6 +36,8 @@ app.get('/gamereviews/:gameid', async (req, res) => {
 
 app.post('/create/batch', (req, res) => {
   let batch = req.body.data;
+  console.log(batch);
+  console.log('inserting batch...')
   insertReviewsByBatch(batch).then(() => {
     console.log("Inserted Batch!");
     res.send(200);
