@@ -53,12 +53,12 @@ app.get('/api/gamereviews/:gameid', async (req, res) => {
 
   client.get(gameid, async (err, result) => {
     if (err) {
-      console.log("CACHE ERROR REDIS RED ALERT RED ALERT");
+      //console.log("CACHE ERROR REDIS RED ALERT RED ALERT");
       res.status(404);
     }
     if (result) {
       //console.log(`*************** ${result} *************************`)
-      console.log("yo we got this cached");
+      //console.log("yo we got this cached");
       res.send(result);
     } else {
       try {
@@ -69,7 +69,7 @@ app.get('/api/gamereviews/:gameid', async (req, res) => {
 
         client.setex(gameid, 3600, JSON.stringify(payload));
 
-        console.log(`cached ${gameid}`);
+        //console.log(`cached ${gameid}`);
 
         res.status(200).json(payload);
       } catch(err) {
@@ -92,13 +92,13 @@ app.post('/api/create/:id_game', (req, res) => {
   let maxSize = 10;
   if (batch.length < maxSize) {
     batch.push(data);
-    console.log(batch.length, ' current batch size..');
+    //console.log(batch.length, ' current batch size..');
     res.send(201);
   }
 
   if (batch.length >= maxSize) {
     let temp = {data: batch};
-    console.log('max size reached..posting...');
+    //console.log('max size reached..posting...');
     batch = [];
     fetch(`http://3.15.142.19:4000/create/batch`, {
       method: 'post',
@@ -106,7 +106,7 @@ app.post('/api/create/:id_game', (req, res) => {
       headers: { 'Content-Type': 'application/json' },
     })
     .then(response => {
-      console.log("Success posting");
+      //console.log("Success posting");
       res.status(201);
     })
     .catch(e => {
