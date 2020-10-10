@@ -57,12 +57,13 @@ app.get('/api/gamereviews/:gameid', async (req, res) => {
       res.status(404);
     }
     if (result) {
+      console.log(`*************** ${result} *************************`)
       console.log("yo we got this cached");
       res.send(result);
     } else {
       try {
-        console.log(gameid);
-        console.log('Got data!')
+        //console.log(gameid);
+        //console.log('Got data!')
         let fetchedData = await fetch(`http://3.15.142.19:4000/gamereviews/${gameid}`)
         let payload = await fetchedData.json();
 
