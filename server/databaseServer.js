@@ -9,7 +9,7 @@ app.use(cors());
 
 app.get('/gamereviews/:gameid', async (req, res) => {
   let { gameid } = req.params;
-  console.log(req.originalUrl)
+  //console.log(req.originalUrl)
   if (parseInt(gameid) <= 0 || parseInt(gameid) > 10000000) {
     res.status(400).json({ error: 'Invalid game ID. Please use a number between 1 and 30000.' });
     return;
@@ -17,7 +17,7 @@ app.get('/gamereviews/:gameid', async (req, res) => {
   try {
     let payload = await getReviewsByGameIdWithUsersAndBadges(gameid, req.query);
 
-    console.log(payload.data.length);
+    //console.log(payload.data.length);
 
     let helpful;
     let recent;
@@ -36,10 +36,10 @@ app.get('/gamereviews/:gameid', async (req, res) => {
 
 app.post('/create/batch', (req, res) => {
   let batch = req.body.data;
-  console.log(batch);
-  console.log('inserting batch...')
+  //console.log(batch);
+  //console.log('inserting batch...')
   insertReviewsByBatch(batch).then(() => {
-    console.log("Inserted Batch!");
+    //console.log("Inserted Batch!");
     res.send(200);
   }).catch(e => {
     console.error(e);
