@@ -57,7 +57,7 @@ app.get('/api/gamereviews/:gameid', async (req, res) => {
       res.status(404);
     }
     if (result) {
-      console.log(`*************** ${result} *************************`)
+      //console.log(`*************** ${result} *************************`)
       console.log("yo we got this cached");
       res.send(result);
     } else {
