@@ -26,7 +26,7 @@ exports.getPurchaseTypeDataForGameId = async (gameId) => {
  */
 exports.getReviewsByGameIdWithOptions = async (gameId, options) => {
   options = filterInvalid(options);
-  console.log(options)
+  //console.log(options)
   let query = buildSQLQuery(gameId, options);
 
   return db.raw(query).then(result => result.rows);
